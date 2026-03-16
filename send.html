@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Send Message</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<style>
+
+body{
+font-family:sans-serif;
+text-align:center;
+padding:40px;
+}
+
+input,textarea{
+width:90%;
+padding:10px;
+margin:10px;
+font-size:18px;
+}
+
+button{
+padding:12px 30px;
+font-size:18px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Write your message 🎉</h2>
+
+<input id="name" placeholder="Your name">
+
+<br>
+
+<textarea id="msg" placeholder="Message"></textarea>
+
+<br>
+
+<button onclick="send()">Send</button>
+
+<script>
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAGpnYDhR1tIrxFs4Kn4Kunkm_XEY8LFM4",
+  authDomain: "my-card-project-da92a.firebaseapp.com",
+  projectId: "my-card-project-da92a",
+  storageBucket: "my-card-project-da92a.firebasestorage.app",
+  messagingSenderId: "204571081278",
+  appId: "1:204571081278:web:be4650cb0b8872009a2f6f"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+function send(){
+
+const name=document.getElementById("name").value
+const msg=document.getElementById("msg").value
+
+db.collection("messages").add({
+name:name,
+msg:msg,
+time:Date.now()
+})
+
+alert("Message sent!")
+
+}
+
+</script>
+
+</body>
+</html>
