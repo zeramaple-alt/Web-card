@@ -67,6 +67,25 @@ popUp 0.7s ease;
 position:relative;
 
 }
+.delete{
+
+position:absolute;
+
+top:6px;
+right:10px;
+
+cursor:pointer;
+
+font-size:16px;
+
+opacity:0.6;
+
+}
+
+.delete:hover{
+opacity:1;
+transform:scale(1.2);
+}
 
 /* ลอยขึ้นลง */
 
@@ -184,6 +203,8 @@ const data = change.doc.data()
 const card=document.createElement("div")
 card.className="card"
 
+card.dataset.id = change.doc.id
+
 card.style.background =
 colors[Math.floor(Math.random()*colors.length)]
 
@@ -191,15 +212,26 @@ card.style.animationDuration =
 (5 + Math.random()*4) + "s"
 
 card.innerHTML =
+"<div class='delete' data-id='"+change.doc.id+"'>🗑</div>" +
 "<b>"+data.name+"</b><br>"+data.msg
 
 document.getElementById("wall").appendChild(card)
+
+card.querySelector(".delete").onclick = function(){
+
+const id = this.dataset.id
+
+db.collection("messages").doc(id).delete()
+
+}
 
 }
 
 })
 
 })
+
+
 
 </script>
 
