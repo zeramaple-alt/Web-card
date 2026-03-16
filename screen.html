@@ -18,21 +18,15 @@ overflow:hidden;
 
 #wall{
 position:absolute;
-top:120px;   /* ดันลงจากหัวข้อ */
+top:120px;           /* เริ่มล่างจากหัวข้อ */
 left:0;
 width:100%;
 height:calc(100% - 120px);
-
-display:flex;
-flex-wrap:wrap;
-align-content:flex-start;
-gap:20px;
-
-padding:40px;
-box-sizing:border-box;
+overflow:hidden;
 }
 
 .card{
+position:absolute;
 width:220px;
 padding:16px;
 border-radius:14px;
@@ -40,21 +34,31 @@ color:#111;
 
 box-shadow:0 10px 25px rgba(0,0,0,0.3);
 
-animation:enter 0.6s ease;
+animation:float 12s linear infinite;
 }
 
-@keyframes enter{
+@keyframes float{
+
 0%{
-transform:translateY(80px) scale(0.8);
-opacity:0;
+transform:translateY(80vh) translateX(0);
 }
-60%{
-transform:translateY(-10px) scale(1.05);
+
+25%{
+transform:translateY(60vh) translateX(30px);
 }
+
+50%{
+transform:translateY(40vh) translateX(-30px);
+}
+
+75%{
+transform:translateY(20vh) translateX(20px);
+}
+
 100%{
-transform:translateY(0) scale(1);
-opacity:1;
+transform:translateY(-150px) translateX(-20px);
 }
+
 }
 
 @keyframes pop{
@@ -124,6 +128,8 @@ card.className="card"
 
 card.style.background =
 colors[Math.floor(Math.random()*colors.length)]
+
+card.style.left = Math.random()*80 + "%"
 
 card.innerHTML =
 "<b>"+data.name+"</b><br>"+data.msg
