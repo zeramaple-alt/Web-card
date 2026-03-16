@@ -18,15 +18,22 @@ overflow:hidden;
 
 #wall{
 position:absolute;
-top:120px;           /* เริ่มล่างจากหัวข้อ */
+top:120px;
 left:0;
 width:100%;
 height:calc(100% - 120px);
-overflow:hidden;
+
+display:grid;
+grid-template-columns:repeat(auto-fill, 240px);
+gap:20px;
+
+justify-content:center;
+align-content:start;
+
+padding:20px;
 }
 
 .card{
-position:absolute;
 width:220px;
 padding:16px;
 border-radius:14px;
@@ -34,29 +41,21 @@ color:#111;
 
 box-shadow:0 10px 25px rgba(0,0,0,0.3);
 
-animation:floatMove 10s ease-in-out infinite;
+animation:floatSoft 6s ease-in-out infinite;
 }
 
-@keyframes floatMove{
+@keyframes floatSoft{
 
 0%{
-transform:translate(0px,0px);
-}
-
-25%{
-transform:translate(40px,-30px);
+transform:translateY(0px);
 }
 
 50%{
-transform:translate(-30px,-60px);
-}
-
-75%{
-transform:translate(20px,-20px);
+transform:translateY(-10px);
 }
 
 100%{
-transform:translate(0px,0px);
+transform:translateY(0px);
 }
 
 }
@@ -121,6 +120,30 @@ snapshot.docChanges().forEach((change)=>{
 
 if(change.type==="added"){
 
+const cards = []
+function getSafePosition(){
+
+let x
+let safe = false
+
+while(!safe){
+
+x = Math.random()*80
+safe = true
+
+cards.forEach(pos=>{
+if(Math.abs(pos - x) < 15){
+safe = false
+}
+})
+
+}
+
+cards.push(x)
+
+return x
+}
+
 const data = change.doc.data()
 
 const card=document.createElement("div")
@@ -129,7 +152,7 @@ card.className="card"
 card.style.background =
 colors[Math.floor(Math.random()*colors.length)]
 
-card.style.left = Math.random()*80 + "%"
+card.style.left = getSafePosition() + "%"
 
 card.innerHTML =
 "<b>"+data.name+"</b><br>"+data.msg
