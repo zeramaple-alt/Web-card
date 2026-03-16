@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Send Message</title>
 
@@ -10,50 +11,111 @@
 <style>
 
 body{
+margin:0;
 font-family:sans-serif;
+background:linear-gradient(135deg,#1e293b,#0f172a);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+color:white;
+}
+
+.container{
+
+background:white;
+color:black;
+padding:25px;
+border-radius:16px;
+width:90%;
+max-width:400px;
+
+box-shadow:0 15px 35px rgba(0,0,0,0.3);
+}
+
+h2{
+margin-top:0;
 text-align:center;
-padding:40px;
 }
 
 input,textarea{
-width:90%;
-padding:10px;
-margin:10px;
-font-size:18px;
+
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ddd;
+font-size:16px;
+box-sizing:border-box;
+
+}
+
+textarea{
+resize:none;
+height:100px;
 }
 
 button{
-padding:12px 30px;
-font-size:18px;
+
+width:100%;
+margin-top:15px;
+padding:14px;
+
+border:none;
+border-radius:12px;
+
+background:#6366f1;
+color:white;
+
+font-size:16px;
+font-weight:bold;
+
+cursor:pointer;
+transition:0.2s;
+
+}
+
+button:hover{
+background:#4f46e5;
+}
+
+.success{
+
+text-align:center;
+margin-top:10px;
+color:green;
+font-weight:bold;
+
 }
 
 </style>
-
 </head>
 
 <body>
 
-<h2>Write your message 🎉</h2>
+<div class="container">
+
+<h2>💌 Send your message</h2>
 
 <input id="name" placeholder="Your name">
 
-<br>
+<textarea id="msg" placeholder="Write your message..."></textarea>
 
-<textarea id="msg" placeholder="Message"></textarea>
+<button onclick="send()">Send Message</button>
 
-<br>
+<div id="success" class="success"></div>
 
-<button onclick="send()">Send</button>
+</div>
 
 <script>
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAGpnYDhR1tIrxFs4Kn4Kunkm_XEY8LFM4",
-  authDomain: "my-card-project-da92a.firebaseapp.com",
-  projectId: "my-card-project-da92a",
-  storageBucket: "my-card-project-da92a.firebasestorage.app",
-  messagingSenderId: "204571081278",
-  appId: "1:204571081278:web:be4650cb0b8872009a2f6f"
+apiKey: "YOUR_API_KEY",
+authDomain: "YOUR_AUTH",
+projectId: "YOUR_PROJECT",
+storageBucket: "YOUR_BUCKET",
+messagingSenderId: "YOUR_ID",
+appId: "YOUR_APP"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -64,13 +126,26 @@ function send(){
 const name=document.getElementById("name").value
 const msg=document.getElementById("msg").value
 
+if(!name || !msg){
+alert("Please fill all fields")
+return
+}
+
 db.collection("messages").add({
+
 name:name,
 msg:msg,
 time:Date.now()
+
 })
 
-alert("Message sent!")
+document.getElementById("msg").value=""
+
+document.getElementById("success").innerText="Message sent! 🎉"
+
+setTimeout(()=>{
+document.getElementById("success").innerText=""
+},2000)
 
 }
 
