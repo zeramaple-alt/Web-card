@@ -7,6 +7,64 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
 <style>
+  body{
+background:#0f172a;
+font-family:sans-serif;
+color:white;
+margin:0;
+overflow:hidden;
+}
+
+#wall{
+position:absolute;
+bottom:0;
+width:100%;
+display:flex;
+flex-wrap:wrap;
+gap:20px;
+padding:40px;
+justify-content:center;
+}
+
+.card{
+min-width:200px;
+max-width:250px;
+padding:16px;
+border-radius:14px;
+color:#111;
+font-weight:500;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+
+animation:pop 0.4s ease, float 8s ease-in-out infinite;
+}
+
+@keyframes pop{
+0%{
+transform:scale(0);
+opacity:0;
+}
+70%{
+transform:scale(1.1);
+}
+100%{
+transform:scale(1);
+opacity:1;
+}
+}
+
+@keyframes float{
+0%{
+transform:translateY(0px);
+}
+50%{
+transform:translateY(-10px);
+}
+100%{
+transform:translateY(0px);
+}
+}
+
+
 body{
 background:#111827;
 font-family:sans-serif;
@@ -42,6 +100,7 @@ opacity:1;
 <h1 style="text-align:center">Send your message 💌</h1>
 
 <div id="messages"></div>
+<div id="wall"></div>
 
 <script>
 
@@ -75,6 +134,41 @@ card.style.left=Math.random()*80+"%"
 card.innerHTML="<b>"+data.name+"</b><br>"+data.msg
 
 document.body.appendChild(card)
+
+}
+
+})
+
+})
+const colors = [
+"#fef08a",
+"#bae6fd",
+"#fecaca",
+"#bbf7d0",
+"#ddd6fe",
+"#fde68a"
+];
+
+db.collection("messages")
+.orderBy("time")
+.onSnapshot((snapshot)=>{
+
+snapshot.docChanges().forEach((change)=>{
+
+if(change.type==="added"){
+
+const data = change.doc.data()
+
+const card=document.createElement("div")
+card.className="card"
+
+card.style.background =
+colors[Math.floor(Math.random()*colors.length)]
+
+card.innerHTML=
+"<b>"+data.name+"</b><br>"+data.msg
+
+document.getElementById("wall").appendChild(card)
 
 }
 
