@@ -27,23 +27,16 @@ font-size:40px;
 /* พื้นที่การ์ด */
 
 #wall{
-position:absolute;
-top:120px;
-left:0;
-width:100%;
-height:calc(100% - 120px);
-
 display:grid;
 grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
-
 gap:20px;
 
 justify-items:center;
+align-items:start;   /* เพิ่มบรรทัดนี้ */
+
 align-content:start;
 
 padding:20px;
-overflow:hidden;
-
 }
 
 /* การ์ด */
