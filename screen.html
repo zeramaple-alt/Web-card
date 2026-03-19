@@ -1,235 +1,341 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Farewell Wall</title>
+    <title>Happy Retirement</title>
 
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
-<style>
+    <style>
+         @font-face {
+            font-family: 'MyItim';
+            src: url('fonts/Itim-Regular.ttf') format('truetype');
+        }
+        body {
+            /* background: url("Background.png") no-repeat center center fixed; */
+            background-color: #17193a;
+            background-size: cover;
+            color: white;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'MyItim', sans-serif;
+        }
 
-body{
-background:#0f172a;
-font-family:sans-serif;
-color:white;
-margin:0;
-overflow:hidden;
-}
+    
 
-/* หัวข้อ */
+        /* หัวข้อ */
 
-h1{
-text-align:center;
-margin-top:30px;
-font-size:40px;
-}
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 40px;
+        }
 
-/* พื้นที่การ์ด */
+        /* พื้นที่การ์ด */
 
-#wall{
-display:grid;
-grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
-gap:20px;
+        #wall {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
 
-justify-items:center;
-align-items:start;   /* เพิ่มบรรทัดนี้ */
+            justify-items: center;
+            align-items: start;
+            /* เพิ่มบรรทัดนี้ */
 
-align-content:start;
+            align-content: start;
 
-padding:20px;
-}
+            padding: 20px;
+        }
 
-/* การ์ด */
+        /* การ์ด */
 
-.card{
+        .card {
 
-width:200px;
+            width: 200px;
 
-padding:16px;
+            padding: 16px;
 
-border-radius:14px;
+            border-radius: 14px;
 
-color:#111;
+            color: #111;
 
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 
-animation:
-floatSoft 6s ease-in-out infinite,
-popUp 0.7s ease;
+            animation:
+                floatSoft 6s ease-in-out infinite,
+                popUp 0.7s ease;
 
-position:relative;
-word-wrap:break-word;
-overflow-wrap:break-word;
-white-space:pre-wrap;
+            position: relative;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
 
-}
-.delete{
+        }
 
-position:absolute;
+        .delete {
 
-top:6px;
-right:10px;
+            position: absolute;
 
-cursor:pointer;
+            top: 6px;
+            right: 10px;
 
-font-size:16px;
+            cursor: pointer;
 
-opacity:0.6;
+            font-size: 16px;
 
-}
+            opacity: 0.6;
 
-.delete:hover{
-opacity:1;
-transform:scale(1.2);
-}
+        }
 
-/* ลอยขึ้นลง */
+        .delete:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
 
-@keyframes floatSoft{
+        /* ลอยขึ้นลง */
 
-0%{ transform:translateY(0px); }
+        @keyframes floatSoft {
 
-50%{ transform:translateY(-25px); }
+            0% {
+                transform: translateY(0px);
+            }
 
-100%{ transform:translateY(0px); }
+            50% {
+                transform: translateY(-25px);
+            }
 
-}
+            100% {
+                transform: translateY(0px);
+            }
 
-/* เด้งเข้าจากล่าง */
+        }
 
-@keyframes popUp{
+        /* เด้งเข้าจากล่าง */
 
-0%{
-transform:translateY(200px) scale(0.5);
-opacity:0;
-}
+        @keyframes popUp {
 
-70%{
-transform:translateY(-10px) scale(1.05);
-}
+            0% {
+                transform: translateY(200px) scale(0.5);
+                opacity: 0;
+            }
 
-100%{
-transform:translateY(0) scale(1);
-opacity:1;
-}
+            70% {
+                transform: translateY(-10px) scale(1.05);
+            }
 
-}
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
 
-/* sparkle */
+        }
 
-.card::after{
+        /* sparkle */
 
-content:"✨";
+        .card::after {
 
-position:absolute;
+            content: "✨";
 
-top:-10px;
-right:-5px;
+            position: absolute;
 
-font-size:18px;
+            top: -10px;
+            right: -5px;
 
-animation:sparkle 2s infinite;
+            font-size: 18px;
 
-}
+            animation: sparkle 2s infinite;
 
-@keyframes sparkle{
+        }
 
-0%{opacity:0;}
-50%{opacity:1;}
-100%{opacity:0;}
+        @keyframes sparkle {
 
-}
+            0% {
+                opacity: 0;
+            }
 
-/* มือถือ */
+            50% {
+                opacity: 1;
+            }
 
-@media(max-width:600px){
+            100% {
+                opacity: 0;
+            }
 
-h1{
-font-size:28px;
-}
+        }
 
-.card{
-width:90%;
-}
+        /* มือถือ */
 
-}
+        @media(max-width:600px) {
 
-</style>
+            h1 {
+                font-size: 28px;
+            }
+
+            .card {
+                width: 90%;
+            }
+
+        }
+
+        /* 🔥 การ์ดที่เพิ่งเปลี่ยน */
+        .highlight {
+
+            animation: highlightPop 1s ease;
+
+
+        }
+
+        /* animation */
+        @keyframes highlightPop {
+
+            100% {
+                transform: scale(1);
+            }
+
+        }
+    </style>
 </head>
 
-<body>
+<img>
 
-<h1>Send your message 💌</h1>
+<h1> <img src="Background.png" height="100px" width="90px"></img> Happy Retirement "Nittaya" 💌</h1>
+
 
 <div id="wall"></div>
 
 <script>
 
-const firebaseConfig = {
-apiKey: "AIzaSyAGpnYDhR1tIrxFs4Kn4Kunkm_XEY8LFM4",
-authDomain: "my-card-project-da92a.firebaseapp.com",
-projectId: "my-card-project-da92a",
-storageBucket: "my-card-project-da92a.firebasestorage.app",
-messagingSenderId: "204571081278",
-appId: "1:204571081278:web:be4650cb0b8872009a2f6f"
-};
+    const firebaseConfig = {
+        apiKey: "AIzaSyAGpnYDhR1tIrxFs4Kn4Kunkm_XEY8LFM4",
+        authDomain: "my-card-project-da92a.firebaseapp.com",
+        projectId: "my-card-project-da92a",
+        storageBucket: "my-card-project-da92a.firebasestorage.app",
+        messagingSenderId: "204571081278",
+        appId: "1:204571081278:web:be4650cb0b8872009a2f6f"
+    };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-const colors = [
-"#fef08a",
-"#bae6fd",
-"#fecaca",
-"#bbf7d0",
-"#ddd6fe",
-"#fde68a"
-];
+    const colors = [
+        "#fef08a",
+        "#bae6fd",
+        "#fecaca",
+        "#bbf7d0",
+        "#ddd6fe",
+        "#fde68a"
+    ];
+    const allMessages = []
+    let started = false
 
-db.collection("messages")
-.orderBy("time")
-.onSnapshot((snapshot)=>{
+    db.collection("messages")
+        .orderBy("time")
+        .onSnapshot((snapshot) => {
 
-snapshot.docChanges().forEach((change)=>{
+            // 🔥 reset แล้วเก็บใหม่
+            allMessages.length = 0
 
-if(change.type==="added"){
+            snapshot.forEach(doc => {
+                allMessages.push({
+                    id: doc.id,
+                    ...doc.data()
+                })
+            })
+            // 🔥 เริ่มสุ่มครั้งเดียว
+            if (!started && allMessages.length > 0) {
+                started = true
+                startRandomSwap()
+            }
 
-const data = change.doc.data()
 
-const card=document.createElement("div")
-card.className="card"
 
-card.dataset.id = change.doc.id
 
-card.style.background =
-colors[Math.floor(Math.random()*colors.length)]
+            // 🔥 ส่วนของเพิ่มการ์ดใหม่ (ของเดิม)
+            snapshot.docChanges().forEach((change) => {
 
-card.style.animationDuration =
-(5 + Math.random()*4) + "s"
+                if (change.type === "added") {
 
-card.innerHTML =
-"<div class='delete' data-id='"+change.doc.id+"'>🗑</div>" +
-"<b>"+data.name+"</b><br>"+data.msg
+                    const data = change.doc.data()
+                    const wall = document.getElementById("wall")
 
-document.getElementById("wall").appendChild(card)
+                    const card = document.createElement("div")
+                    card.className = "card"
 
-card.querySelector(".delete").onclick = function(){
+                    card.dataset.id = change.doc.id
 
-const id = this.dataset.id
+                    card.style.background =
+                        colors[Math.floor(Math.random() * colors.length)]
 
-db.collection("messages").doc(id).delete()
+                    card.style.animationDuration =
+                        (5 + Math.random() * 4) + "s"
 
-}
+                    card.innerHTML =
+                        "<div class='delete' data-id='" + change.doc.id + "'>🗑</div>" +
+                        "<b>" + data.name + "</b><br>" + data.msg
 
-}
+                    wall.appendChild(card)
 
-})
+                    // 🔥 ล้น → ลบใบแรก
+                    if (wall.scrollHeight > window.innerHeight) {
+                        wall.removeChild(wall.firstChild)
+                    }
 
-})
+                    card.querySelector(".delete").onclick = function () {
+                        const id = this.dataset.id
+                        db.collection("messages").doc(id).delete()
+                    }
+                }
+
+            })
+
+        })
+
+    function startRandomSwap() {
+
+        setInterval(() => {
+
+            const wall = document.getElementById("wall")
+
+            if (wall.children.length === 0) return
+
+            const cards = wall.children
+            const randomCardIndex = Math.floor(Math.random() * cards.length)
+            const card = cards[randomCardIndex]
+
+            const randomData = allMessages[Math.floor(Math.random() * allMessages.length)]
+
+            card.classList.add("fadeOut")
+
+            setTimeout(() => {
+
+                card.innerHTML =
+                    "<div class='delete' data-id='" + randomData.id + "'>🗑</div>" +
+                    "<b>" + randomData.name + "</b><br>" + randomData.msg
+
+                card.dataset.id = randomData.id
+
+                card.querySelector(".delete").onclick = function () {
+                    const id = this.dataset.id
+                    db.collection("messages").doc(id).delete()
+                }
+
+                card.classList.remove("fadeOut")
+                card.classList.add("fadeIn")
+
+                card.classList.add("highlight")
+                setTimeout(() => card.classList.remove("highlight"), 1000)
+
+            }, 400)
+
+        }, 5000)
+
+    }
 
 
 
 </script>
 
 </body>
+
 </html>
