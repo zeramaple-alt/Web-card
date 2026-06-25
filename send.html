@@ -1,155 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ส่งข้อความอำลา</title>
 
-<title>Send Message</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+        }
 
-<style>
+        .container {
+            background: white;
+            color: black;
+            padding: 25px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
 
-body{
-margin:0;
-font-family:sans-serif;
-background:linear-gradient(135deg,#1e293b,#0f172a);
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-color:white;
-}
+        h2 {
+            margin-top: 0;
+            text-align: center;
+        }
 
-.container{
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
 
-background:white;
-color:black;
-padding:25px;
-border-radius:16px;
-width:90%;
-max-width:400px;
+        textarea {
+            resize: none;
+            height: 100px;
+        }
 
-box-shadow:0 15px 35px rgba(0,0,0,0.3);
-}
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: #6366f1;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-h2{
-margin-top:0;
-text-align:center;
-}
+        button:hover {
+            background: #4f46e5;
+        }
 
-input,textarea{
+        button:disabled {
+            background: #a5b4fc;
+            cursor: not-allowed;
+        }
 
-width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:10px;
-border:1px solid #ddd;
-font-size:16px;
-box-sizing:border-box;
+        .status {
+            text-align: center;
+            margin-top: 12px;
+            font-weight: bold;
+            min-height: 22px;
+        }
 
-}
+        .status.success {
+            color: green;
+        }
 
-textarea{
-resize:none;
-height:100px;
-}
+        .status.error {
+            color: #dc2626;
+        }
 
-button{
-
-width:100%;
-margin-top:15px;
-padding:14px;
-
-border:none;
-border-radius:12px;
-
-background:#6366f1;
-color:white;
-
-font-size:16px;
-font-weight:bold;
-
-cursor:pointer;
-transition:0.2s;
-
-}
-
-button:hover{
-background:#4f46e5;
-}
-
-.success{
-
-text-align:center;
-margin-top:10px;
-color:green;
-font-weight:bold;
-
-}
-
-</style>
+        .status.sending {
+            color: #6366f1;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
+        <h2>💌 ส่งข้อความอำลา</h2>
 
-<h2>💌 Send your message</h2>
+        <input id="name" placeholder="ชื่อของคุณ" maxlength="50">
+        <textarea id="msg" placeholder="เขียนข้อความ..." maxlength="500"></textarea>
 
-<input id="name" placeholder="Your name">
+        <button id="sendBtn" onclick="send()">ส่งข้อความ</button>
 
-<textarea id="msg" placeholder="Write your message..."></textarea>
+        <div id="status" class="status"></div>
+    </div>
 
-<button onclick="send()">Send Message</button>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGpnYDhR1tIrxFs4Kn4Kunkm_XEY8LFM4",
+            authDomain: "my-card-project-da92a.firebaseapp.com",
+            projectId: "my-card-project-da92a",
+            storageBucket: "my-card-project-da92a.firebasestorage.app",
+            messagingSenderId: "204571081278",
+            appId: "1:204571081278:web:be4650cb0b8872009a2f6f"
+        };
 
-<div id="success" class="success"></div>
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-</div>
+        const btn = document.getElementById("sendBtn");
+        const statusEl = document.getElementById("status");
 
-<script>
+        function setStatus(text, type) {
+            statusEl.textContent = text;
+            statusEl.className = "status " + (type || "");
+        }
 
-const firebaseConfig = {
-apiKey: "AIzaSyAGpnYDhR1tIrxFs4Kn4Kunkm_XEY8LFM4",
-authDomain: "my-card-project-da92a.firebaseapp.com",
-projectId: "my-card-project-da92a",
-storageBucket: "my-card-project-da92a.firebasestorage.app",
-messagingSenderId: "204571081278",
-appId: "1:204571081278:web:be4650cb0b8872009a2f6f"
-};
+        // reject ถ้าเกินเวลาที่กำหนด (กันค้างแบบเงียบ)
+        function withTimeout(promise, ms) {
+            return Promise.race([
+                promise,
+                new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error("หมดเวลาเชื่อมต่อ")), ms)
+                )
+            ]);
+        }
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+        function send() {
+            const name = document.getElementById("name").value.trim();
+            const msg = document.getElementById("msg").value.trim();
 
-function send(){
+            if (!name || !msg) {
+                setStatus("กรุณากรอกชื่อและข้อความให้ครบ", "error");
+                return;
+            }
 
-const name=document.getElementById("name").value
-const msg=document.getElementById("msg").value
+            btn.disabled = true;
+            setStatus("กำลังส่ง...", "sending");
 
-if(!name || !msg){
-alert("Please fill all fields")
-return
-}
-
-db.collection("messages").add({
-
-name:name,
-msg:msg,
-time:Date.now()
-
-})
-
-document.getElementById("msg").value=""
-
-document.getElementById("success").innerText="Message sent! 🎉"
-
-setTimeout(()=>{
-document.getElementById("success").innerText=""
-},2000)
-
-}
-
-</script>
+            withTimeout(
+                db.collection("messages_rawiwan").add({
+                    name: name,
+                    msg: msg,
+                    time: Date.now()
+                }),
+                10000
+            )
+                .then(() => {
+                    document.getElementById("msg").value = "";
+                    setStatus("ส่งข้อความสำเร็จ! 🎉", "success");
+                    btn.disabled = false;
+                })
+                .catch((err) => {
+                    console.error("ส่งไม่สำเร็จ:", err);
+                    setStatus("ส่งไม่สำเร็จ: " + err.message, "error");
+                    btn.disabled = false;
+                });
+        }
+    </script>
 
 </body>
+
 </html>

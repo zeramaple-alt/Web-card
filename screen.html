@@ -13,14 +13,19 @@
             src: url('DEMO-LBLazytoTalk.ttf');
         }
 
+        html, body {
+            height: 100%;
+        }
+
         body {
-            /* background: url("Background.png") no-repeat center center fixed; */
-            background-color: #17193a;
+            background-color: #ffec99;
             background-size: cover;
-            color: white;
+            color: #5b4a1f;
             margin: 0;
             overflow: hidden;
             font-family: 'MyItim', sans-serif;
+            display: flex;
+            flex-direction: column;
         }
 
 
@@ -29,63 +34,189 @@
 
         h1 {
             text-align: center;
-            margin-top: 30px;
+            margin: 20px 0 10px;
             font-size: 40px;
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0px;
+        }
+
+        .hero {
+            margin-left: -10px;
+        }
+
+        h1 img {
+            border-radius: 12px;
+            vertical-align: middle;
+        }
+
+        /* กล่องครอบรูป โชว์แค่ครึ่งตัวบน (ตัดขาออก) */
+        .hero {
+            display: inline-block;
+            width: 155px;
+            height: 155px;
+            overflow: hidden;
+            border-radius: 14px;
+        }
+
+        .hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            object-position: top center;
+            border-radius: 0;
         }
 
         /* พื้นที่การ์ด */
 
         #wall {
+            flex: 1 1 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-
-            justify-items: center;
-            align-items: start;
-            /* เพิ่มบรรทัดนี้ */
-
+            grid-template-columns: repeat(var(--cols, 4), 1fr);
+            grid-auto-rows: var(--rowH, 200px);
+            gap: 16px;
+            justify-items: stretch;
             align-content: start;
-
-            padding: 20px;
+            padding: 16px;
+            overflow: hidden;
         }
 
-        /* การ์ด */
+        /* สถานะว่าง */
+        #emptyState {
+            margin: auto;
+            text-align: center;
+            font-size: 26px;
+            opacity: 0.8;
+        }
+
+        /* ตัวบอกหน้า/รอบการหมุนเวียน */
+        #pager {
+            position: fixed;
+            bottom: 12px;
+            right: 16px;
+            font-size: 16px;
+            opacity: 0.6;
+            color: white;
+        }
+
+        /* การ์ด = กรอบนอก (ไม่ถูกตัด เพื่อให้ก้านโผล่ได้) */
 
         .card {
-
-            width: 200px;
-
-            padding: 16px;
-
-            border-radius: 14px;
-
-            color: #111;
-
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-
+            position: relative;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.35));
             animation:
-                floatSoft 6s ease-in-out infinite,
-                popUp 0.7s ease;
+                fadeIn 0.8s ease both,
+                floatSoft 6s ease-in-out infinite;
+            color: #3a2a10;
+        }
+
+        /* ก้านทุเรียนสีน้ำตาลแง้งเล็กๆ */
+        .stem {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-8deg);
+            width: 12px;
+            height: 28px;
+            background: linear-gradient(180deg, #8a5a2b, #6b3f18);
+            border-radius: 6px 6px 3px 3px;
+            z-index: 3;
+            box-shadow: inset -2px 0 2px rgba(0, 0, 0, 0.25);
+        }
+        /* ฐานก้านเล็กๆ ตรงต่อกับลูก */
+        .stem::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 8px;
+            background: #5e3614;
+            border-radius: 50%;
+        }
+
+        /* ลูกทุเรียน (เปลือกหนามเขียว) - ส่วนที่ถูกตัดเป็นหนาม */
+        .durian-body {
+
+            color: #3a2a10;
 
             position: relative;
+            overflow: visible;
+            display: flex;
+            width: 100%;
+
+            /* เปลือกทุเรียนสีเขียว */
+            background:
+                radial-gradient(circle at 38% 32%, #7cae2e 0%, #5b8c1f 45%, #466d18 100%);
+
+            /* รูปหนามแหลมรอบ ๆ */
+            clip-path: polygon(
+                50% 0%, 57.4% 12.7%, 69.1% 3.8%, 71.1% 18.4%, 85.4% 14.6%,
+                81.6% 28.9%, 96.2% 30.9%, 87.3% 42.6%, 100% 50%, 87.3% 57.4%,
+                96.2% 69.1%, 81.6% 71.1%, 85.4% 85.4%, 71.1% 81.6%, 69.1% 96.2%,
+                57.4% 87.3%, 50% 100%, 42.6% 87.3%, 30.9% 96.2%, 28.9% 81.6%,
+                14.6% 85.4%, 18.4% 71.1%, 3.8% 69.1%, 12.7% 57.4%, 0% 50%,
+                12.7% 42.6%, 3.8% 30.9%, 18.4% 28.9%, 14.6% 14.6%, 28.9% 18.4%,
+                30.9% 3.8%, 42.6% 12.7%
+            );
+
+            /* เว้นขอบให้หนามโผล่รอบแผ่นข้อความ */
+            padding: 15%;
+            box-sizing: border-box;
+        }
+
+        /* แผ่นเนื้อในสีครีม ไว้อ่านข้อความ */
+        .durian-inside {
+            background: linear-gradient(160deg, #fffdf3, #fff1cf);
+            border-radius: 14px;
+            width: 100%;
+            height: 100%;
+            padding: 10px 12px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6);
             word-wrap: break-word;
             overflow-wrap: break-word;
             white-space: pre-wrap;
+        }
 
+        .card .name {
+            font-weight: bold;
+            margin-bottom: 6px;
+            flex: 0 0 auto;
+            color: #6b4e16;
+        }
+
+        .card .body {
+            flex: 1 1 auto;
+            overflow: hidden;
+            font-size: 16px;
+            line-height: 1.3;
         }
 
         .delete {
 
             position: absolute;
 
-            top: 6px;
-            right: 10px;
+            top: 16%;
+            right: 16%;
 
             cursor: pointer;
 
-            font-size: 16px;
+            font-size: 18px;
 
             opacity: 0.6;
+            z-index: 5;
 
         }
 
@@ -94,73 +225,34 @@
             transform: scale(1.2);
         }
 
-        /* ลอยขึ้นลง */
+        /* ลอยขึ้นลงนุ่มๆ เหมือนก้อนเมฆ */
 
         @keyframes floatSoft {
 
             0% {
-                transform: translateY(0px);
+                transform: translateY(0px) rotate(-0.6deg);
             }
 
             50% {
-                transform: translateY(-25px);
+                transform: translateY(-14px) rotate(0.6deg);
             }
 
             100% {
-                transform: translateY(0px);
+                transform: translateY(0px) rotate(-0.6deg);
             }
 
         }
 
-        /* เด้งเข้าจากล่าง */
+        /* ปรากฏแบบนุ่มๆ (ใช้ opacity อย่างเดียว จะได้ไม่ชนกับการลอย) */
 
-        @keyframes popUp {
-
-            0% {
-                transform: translateY(200px) scale(0.5);
-                opacity: 0;
-            }
-
-            70% {
-                transform: translateY(-10px) scale(1.05);
-            }
-
-            100% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-
-        }
-
-        /* sparkle */
-
-        .card::after {
-
-            content: "✨";
-
-            position: absolute;
-
-            top: -10px;
-            right: -5px;
-
-            font-size: 18px;
-
-            animation: sparkle 2s infinite;
-
-        }
-
-        @keyframes sparkle {
+        @keyframes fadeIn {
 
             0% {
                 opacity: 0;
             }
 
-            50% {
-                opacity: 1;
-            }
-
             100% {
-                opacity: 0;
+                opacity: 1;
             }
 
         }
@@ -170,11 +262,7 @@
         @media(max-width:600px) {
 
             h1 {
-                font-size: 28px;
-            }
-
-            .card {
-                width: 90%;
+                font-size: 24px;
             }
 
         }
@@ -200,10 +288,12 @@
 
 <img>
 
-<h1> <img src="Background.png" height="100px" width="90px"></img> Happy Retirement "Nittaya" 💌</h1>
+<h1>Happy Retirement "Rawiwan" 💌 <span class="hero"><img src="Rawiwan.png"></span></h1>
 
 
 <div id="wall"></div>
+<div id="emptyState" style="display:none">ยังไม่มีข้อความอวยพร 💌</div>
+<div id="pager"></div>
 
 <script>
 
@@ -227,113 +317,166 @@
         "#ddd6fe",
         "#fde68a"
     ];
-    const allMessages = []
-    let started = false
 
-    db.collection("messages")
-        .orderBy("time")
-        .onSnapshot((snapshot) => {
+    const wall = document.getElementById("wall");
+    const emptyState = document.getElementById("emptyState");
+    const pager = document.getElementById("pager");
 
-            // 🔥 reset แล้วเก็บใหม่
-            allMessages.length = 0
+    // เก็บข้อความทั้งหมดไว้ในหน่วยความจำ (ใหม่สุดอยู่ก่อน)
+    let allMessages = [];
+    let pageIndex = 0;        // หน้าปัจจุบันของการหมุนเวียน
+    let capacity = 8;         // จำนวนการ์ดต่อหน้า (คำนวณใหม่ตามขนาดจอ)
 
-            snapshot.forEach(doc => {
-                allMessages.push({
-                    id: doc.id,
-                    ...doc.data()
-                })
-            })
-            // 🔥 เริ่มสุ่มครั้งเดียว
-            if (!started && allMessages.length > 0) {
-                started = true
-                startRandomSwap()
-            }
+    // ----- คำนวณว่าจอรับการ์ดได้กี่ใบ -----
+    function computeLayout() {
+        const minCardW = 300;   // ความกว้างขั้นต่ำต่อการ์ด (ทุเรียนต้องใหญ่หน่อย)
+        const minCardH = 260;   // ความสูงขั้นต่ำต่อการ์ด
+        const gap = 16;
 
+        const wallW = wall.clientWidth || window.innerWidth;
+        const wallH = wall.clientHeight || (window.innerHeight - 160);
 
+        let cols = Math.max(1, Math.floor((wallW + gap) / (minCardW + gap)));
+        let rows = Math.max(1, Math.floor((wallH + gap) / (minCardH + gap)));
 
+        capacity = cols * rows;
 
-            // 🔥 ส่วนของเพิ่มการ์ดใหม่ (ของเดิม)
-            snapshot.docChanges().forEach((change) => {
+        // คำนวณความสูงแถวให้พอดีพื้นที่ ไม่ให้ล้น
+        const rowH = Math.floor((wallH - gap * (rows - 1)) / rows);
 
-                if (change.type === "added") {
-
-                    const data = change.doc.data()
-                    const wall = document.getElementById("wall")
-
-                    const card = document.createElement("div")
-                    card.className = "card"
-
-                    card.dataset.id = change.doc.id
-
-                    card.style.background =
-                        colors[Math.floor(Math.random() * colors.length)]
-
-                    card.style.animationDuration =
-                        (5 + Math.random() * 4) + "s"
-
-                    card.innerHTML =
-                        "<div class='delete' data-id='" + change.doc.id + "'>🗑</div>" +
-                        "<b>" + data.name + "</b><br>" + data.msg
-
-                    wall.appendChild(card)
-
-                    // 🔥 ล้น → ลบใบแรก
-                    if (wall.scrollHeight > window.innerHeight) {
-                        wall.removeChild(wall.firstChild)
-                    }
-
-                    card.querySelector(".delete").onclick = function () {
-                        const id = this.dataset.id
-                        db.collection("messages").doc(id).delete()
-                    }
-                }
-
-            })
-
-        })
-
-    function startRandomSwap() {
-
-        setInterval(() => {
-
-            const wall = document.getElementById("wall")
-
-            if (wall.children.length === 0) return
-
-            const cards = wall.children
-            const randomCardIndex = Math.floor(Math.random() * cards.length)
-            const card = cards[randomCardIndex]
-
-            const randomData = allMessages[Math.floor(Math.random() * allMessages.length)]
-
-            card.classList.add("fadeOut")
-
-            setTimeout(() => {
-
-                card.innerHTML =
-                    "<div class='delete' data-id='" + randomData.id + "'>🗑</div>" +
-                    "<b>" + randomData.name + "</b><br>" + randomData.msg
-
-                card.dataset.id = randomData.id
-
-                card.querySelector(".delete").onclick = function () {
-                    const id = this.dataset.id
-                    db.collection("messages").doc(id).delete()
-                }
-
-                card.classList.remove("fadeOut")
-                card.classList.add("fadeIn")
-
-                card.classList.add("highlight")
-                setTimeout(() => card.classList.remove("highlight"), 1000)
-
-            }, 400)
-
-        }, 5000)
-
+        wall.style.setProperty("--cols", cols);
+        wall.style.setProperty("--rowH", rowH + "px");
     }
 
+    // ----- สร้าง element การ์ดหนึ่งใบ -----
+    function makeCard(msg) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.dataset.id = msg.id;
 
+        // ให้แต่ละใบลอยด้วยจังหวะ/ความเร็วต่างกัน ดูเป็นธรรมชาติเหมือนก้อนเมฆ
+        const floatDur = (5 + Math.random() * 4).toFixed(2);   // 5-9 วินาที
+        const floatDelay = (-Math.random() * 6).toFixed(2);    // เริ่มไม่พร้อมกัน
+        card.style.animation =
+            "fadeIn 0.8s ease both, floatSoft " + floatDur + "s ease-in-out " + floatDelay + "s infinite";
+
+        card.innerHTML =
+            "<div class='stem'></div>" +
+            "<div class='delete' data-id='" + msg.id + "'>🗑</div>" +
+            "<div class='durian-body'>" +
+            "<div class='durian-inside'>" +
+            "<div class='name'>" + escapeHtml(msg.name) + "</div>" +
+            "<div class='body'>" + escapeHtml(msg.msg) + "</div>" +
+            "</div>" +
+            "</div>";
+
+        card.querySelector(".delete").onclick = function () {
+            const id = this.dataset.id;
+            if (confirm("ต้องการลบข้อความนี้หรือไม่?")) {
+                db.collection("messages_rawiwan").doc(id).delete()
+                    .catch(err => alert("ลบไม่สำเร็จ: " + err.message));
+            }
+        };
+        return card;
+    }
+
+    // ----- วาดหน้าปัจจุบัน -----
+    function render() {
+        if (allMessages.length === 0) {
+            wall.innerHTML = "";
+            emptyState.style.display = "block";
+            pager.textContent = "";
+            return;
+        }
+        emptyState.style.display = "none";
+
+        const totalPages = Math.max(1, Math.ceil(allMessages.length / capacity));
+        if (pageIndex >= totalPages) pageIndex = 0;
+
+        const start = pageIndex * capacity;
+        const slice = allMessages.slice(start, start + capacity);
+
+        wall.innerHTML = "";
+        slice.forEach(msg => wall.appendChild(makeCard(msg)));
+
+        // ย่อตัวอักษรให้พอดีการ์ด (ข้อความยาว = เล็กลง แต่เห็นครบ)
+        requestAnimationFrame(() => {
+            wall.querySelectorAll(".card").forEach(fitCardText);
+        });
+
+        pager.textContent = allMessages.length > capacity
+            ? "หน้า " + (pageIndex + 1) + " / " + totalPages + " · " + allMessages.length + " ข้อความ"
+            : allMessages.length + " ข้อความ";
+    }
+
+    // ----- ย่อขนาดฟอนต์ของเนื้อหาให้พอดีความสูงการ์ด -----
+    function fitCardText(card) {
+        const body = card.querySelector(".body");
+        if (!body) return;
+        let size = 18;             // เริ่มที่ใหญ่สุด
+        const minSize = 9;         // เล็กสุดที่ยอมให้ย่อ
+        body.style.fontSize = size + "px";
+        // ลดทีละ 1px จนเนื้อหาไม่ล้นกรอบ
+        while (body.scrollHeight > body.clientHeight && size > minSize) {
+            size -= 1;
+            body.style.fontSize = size + "px";
+        }
+    }
+
+    // ----- หมุนเวียนหน้าทุก 5 วินาที -----
+    function nextPage() {
+        if (allMessages.length <= capacity) return; // ไม่ต้องหมุนถ้าพอดีหน้าเดียว
+        const totalPages = Math.ceil(allMessages.length / capacity);
+        pageIndex = (pageIndex + 1) % totalPages;
+        render();
+    }
+    setInterval(nextPage, 5000);
+
+    // วาดใหม่เมื่อปรับขนาดจอ
+    window.addEventListener("resize", () => {
+        computeLayout();
+        render();
+    });
+
+    // ----- subscribe ข้อมูลเรียลไทม์ -----
+    let prevCount = 0;
+    db.collection("messages_rawiwan")
+        .orderBy("time", "desc")   // ใหม่สุดก่อน
+        .onSnapshot((snapshot) => {
+            allMessages = [];
+            snapshot.forEach(doc => {
+                allMessages.push({ id: doc.id, ...doc.data() });
+            });
+
+            // มีข้อความใหม่เข้ามา → เด้งกลับหน้าแรกเพื่อโชว์ทันที
+            if (allMessages.length > prevCount) {
+                pageIndex = 0;
+            }
+            prevCount = allMessages.length;
+
+            computeLayout();
+            render();
+        }, (error) => {
+            console.error("เชื่อมต่อฐานข้อมูลขัดข้อง:", error);
+            showConnectionBanner();
+        });
+
+    function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text == null ? "" : String(text);
+        return div.innerHTML;
+    }
+
+    function showConnectionBanner() {
+        if (document.getElementById("connBanner")) return;
+        const banner = document.createElement("div");
+        banner.id = "connBanner";
+        banner.textContent = "⚠️ การเชื่อมต่อขัดข้อง กำลังพยายามเชื่อมต่อใหม่...";
+        banner.style.cssText =
+            "position:fixed;top:0;left:0;right:0;background:#dc2626;color:white;" +
+            "text-align:center;padding:10px;font-size:18px;z-index:9999;";
+        document.body.appendChild(banner);
+    }
 
 </script>
 
